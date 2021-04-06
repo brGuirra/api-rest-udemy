@@ -1,3 +1,11 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Importa o arquivo index.js para inicar as configurações
+// do database com o Sequelize
+import './src/database';
+
 import express from 'express';
 import homeRoutes from './src/routes/homeRoutes';
 

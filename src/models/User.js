@@ -52,7 +52,9 @@ export default class User extends Model {
     // e salva em password_hash antes de enviar os
     // dados do model pro db
     this.addHook('beforeSave', async (user) => {
-      user.password_hash = await bcryptjs.hash(user.password, 8);
+      if (user.password) {
+        user.password_hash = await bcryptjs.hash(user.password, 8);
+      }
     });
 
     return this;

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/User';
 
-export default (req, res, next) => {
+export default async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
@@ -15,6 +16,23 @@ export default (req, res, next) => {
   try {
     const dados = jwt.verify(token, process.env.TOKEN_SECRET);
     const { id, email } = dados;
+
+    // Checa se o e-mail e o id do usuário
+    // batem com que está na base de dados,
+    // isso previne que um usuário continue
+    // autorizado após alterar o e-mail do seu cadastro
+    const user = await User.findOne({
+      where: {
+        id,
+        email,
+      },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        errors: ['Usuário inválido'],
+      });
+    }
 
     // Atrela o e-mail e id do usuáiro logado na requisição
     req.userId = id;

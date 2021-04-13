@@ -28,10 +28,4 @@ export default class Foto extends Model {
     });
     return this;
   }
-
-  // Associa a foto ao model de aluno,
-  // a foto pertence ao aluno
-  static associate(models) {
-    this.belongsTo(models.Aluno, { foreignKey: 'aluno_id' });
-  }
 }
